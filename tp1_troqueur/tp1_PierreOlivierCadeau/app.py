@@ -15,11 +15,11 @@ def lister_routes():
         },
         {
             'route': '/ajout_article',
-            'nom': 'Ajout article'
+            'nom': "Ajout d'un article"
         },
         {
             'route': '/details_objet',
-            'nom': 'Liste'
+            'nom': 'Tous les articles'
         }
     ]
 
@@ -35,7 +35,7 @@ def index():
 
 
 @app.route('/ajout_article')
-def article():
+def ajout_article():
     """Page d'index"""
     return render_template(
         'formulaire.jinja',
@@ -45,12 +45,12 @@ def article():
     )
 
 @app.route('/details_objet')
-def article():
+def liste_article():
     """Page d'index"""
     return render_template(
-        'base.jinja',
+        'article.jinja',
         titre_h1='Bonjour!',
-        message='Bienvenu sur la démo des templates!',
+        message='Bienvenu sur la démo des template!',
         routes=lister_routes()
     )
 
