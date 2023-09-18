@@ -1,8 +1,8 @@
 """
 TP1 web 3
 """
-
-from flask import Flask, render_template
+import re
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -14,6 +14,10 @@ def lister_routes():
             'nom': 'Accueil'
         },
         {
+            'route': '/ajout_article',
+            'nom': 'Ajout article'
+        },
+        {
             'route': '/details_objet',
             'nom': 'Liste'
         }
@@ -21,7 +25,7 @@ def lister_routes():
 
 @app.route('/')
 def index():
-    """Page d'index"""
+    """Affiche la page d'accueil"""
     return render_template(
         'base.jinja',
         titre_h1='Bonjour!',
@@ -29,12 +33,23 @@ def index():
         routes=lister_routes()
     )
 
+
+@app.route('/ajout_article')
+def article():
+    """Page d'index"""
+    return render_template(
+        'formulaire.jinja',
+        titre_h1='Bonjour!',
+        message='Bienvenu sur la démo des templates!',
+        routes=lister_routes()
+    )
+
 @app.route('/details_objet')
-def detail():
+def article():
     """Page d'index"""
     return render_template(
         'base.jinja',
-        titre='Salut!',
+        titre_h1='Bonjour!',
         message='Bienvenu sur la démo des templates!',
         routes=lister_routes()
     )
