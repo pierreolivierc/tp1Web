@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+
+<head>
+    <title>{% if titre_onglet %} {{titre_onglet}} | {% endif %} Ebaie</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://www.cegepgarneau.ca/favicon.ico" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">SCP Foundation</a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            {% for page in routes %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{page.route}}">{{page.nom}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    </nav>
+    <main>
+        <h2>{{titre}}</h2>
+            <form action="/base" method="post">
+                <div>
+                    <label for="titre">Titre:</label>
+                    <input type="text" name="titre" id="titre" />
+                </div>
+                <div>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" cols="30" rows="10"></textarea>
+                </div>
+                <div>
+                    <label for="categorie">Risque de catégorie:</label>
+                    <select name="categorie" id="categorie">
+                        <option value="securitaire">Sécuritaire</option>
+                        <option value="euclid">Euclid</option>
+                        <option value="Keter">Keter</option>
+                        <option value="appolyon">Appolyon</option>
+                        <option value="thaumel">Thaumel</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="image">Image du phénomène:</label>
+                    <input type="file" name="image" id="image" accept="image/png, image/jpeg"/>
+                </div>
+                <div>
+                    <button type="submit">Envoyer</button>
+                </div>
+        </form>
+    </main>
+
+    <footer>
+            <p>Pierre-Olivier Cadeau</p>
+            <p>© copyright</p>
+    </footer>
+
+</body>
+
+</html>

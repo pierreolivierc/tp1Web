@@ -1,0 +1,15 @@
+{# Template pour l'index #}
+{% extends "base.jinja" %}
+
+{% block contenu %}
+
+
+    <h3>
+        {{ titre_h3 }}
+    </h3>
+    <img src="{{ src_image_article }}" alt="{{ alt_image_article }}">
+    <p>
+        {{message}}
+    </p>
+
+{% endblock %}
