@@ -11,27 +11,32 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">SCP Foundation</a>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            {% for page in routes %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{page.route}}">{{page.nom}}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <div class="container">
+            <div class="container-fluid">
+                <h1 class="navbar-brand" href="#">SCP Foundation</h1>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    {% for page in routes %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{page.route}}">{{page.nom}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </nav>
-    <main>
-        <h2>{{titre}}</h2>
+    <main style="margin-top: 150px;">
+        <h2>{{titre_h2}}</h2>
         {% block contenu %}
-            <h3></h3>
-            <img src="" alt="">
-            <p></p>
+            <div>
+                <img src="" alt="">
+                <div>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </div>
         {% endblock %}
 
     </main>

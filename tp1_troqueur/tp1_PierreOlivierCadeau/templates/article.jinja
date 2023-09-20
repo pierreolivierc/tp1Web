@@ -2,14 +2,17 @@
 {% extends "base.jinja" %}
 
 {% block contenu %}
+    <div class="card" style="width: 18rem;">
+        <img src="{{ src_image_article }}" class="card-img-top" alt="{{ alt_image_article }}">
+        <div class="card-body">
+            <h3 class="card-title">
+                {{ titre_h3 }}
+            </h3>
+            <p class="card-text">
+                {{message}}
+            </p>
+        </div>
+    </div>
 
-
-    <h3>
-        {{ titre_h3 }}
-    </h3>
-    <img src="{{ src_image_article }}" alt="{{ alt_image_article }}">
-    <p>
-        {{message}}
-    </p>
 
 {% endblock %}

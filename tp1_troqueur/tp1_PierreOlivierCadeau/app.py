@@ -27,9 +27,11 @@ def lister_routes():
 def index():
     """Affiche la page d'accueil"""
     return render_template(
-        'base.jinja',
-        titre_h1='Bonjour!',
-        message='Bienvenu sur la démo des templates!',
+        'article.jinja',
+        titre_h2='Les 5 derniers cas répertorié',
+        titre_h3='Test',
+        src_image_article= '../static/images/scp1471.jpg',
+        message="Description d'article!",
         routes=lister_routes()
     )
 
