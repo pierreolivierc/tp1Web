@@ -2,6 +2,7 @@
 TP1 web 3
 """
 import re
+import bd
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -56,3 +57,18 @@ def liste_article():
         routes=lister_routes()
     )
 
+
+def insertion_objet(u_id, u_titre, u_description, u_photo, u_categorie, u_commentaires):
+    """Pour démontrer une insertion"""
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            # Insertion de objet
+            curseur.execute(
+                "INSERT INTO `objets` " +
+                "(`id`, `titre`, `description`, `photo`, `categorie`) " +
+                "VALUES (" +
+                "%(u_id)s, %(u_titre)s, %(u_description)s, %(u_photo)s, %(u_categorie)s, %(u_commentaires)s )"
+            )
+
+            print(f"Identifiant de l'élément ajouté : {curseur.lastrowid}")
