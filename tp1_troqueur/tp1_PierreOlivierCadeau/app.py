@@ -44,6 +44,7 @@ def index():
     """Affiche la page d'accueil"""
     return render_template(
         'article.jinja',
+        titre_onglet = 'Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
         titre_h3='Test',
         src_image_article= '../static/images/image_par_default.jpg',
@@ -89,6 +90,7 @@ def ajout_article():
 
         return render_template(
             'article.jinja',
+            titre_onglet='Ajout de produit',
             titre_h2='Les 5 derniers produits à échéanger',
             titre_h3= titre,
             sous_titre= categorie_value,
@@ -100,6 +102,7 @@ def ajout_article():
     else:
         return render_template(
             'formulaire.jinja',
+            titre_onglet='Ajout de produit',
             routes=lister_routes()
         )
 
@@ -108,6 +111,7 @@ def liste_article():
     """Page d'index"""
     return render_template(
         'article.jinja',
+        titre_onglet='Tous les produits',
         titre_h1='Bonjour!',
         message='Bienvenu sur la démo des template!',
         routes=lister_routes()
