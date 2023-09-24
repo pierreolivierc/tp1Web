@@ -37,6 +37,8 @@ def lister_routes():
         }
     ]
 
+
+
 @app.route('/')
 def index():
     """Affiche la page d'accueil"""
@@ -57,7 +59,10 @@ def ajout_article():
     if request.method == "POST":
         titre = request.form['titre']
         description = request.form['description']
-        categorie = request.form['categorie']
+
+        #récupération du ID catégorie
+        categorie_value = request.form['categorie']
+        categorie = recuperation_id_categorie([categorie_value])
 
         # attribution de la date comme nom pour classer les images
         maintenant = datetime.datetime.now()
@@ -86,7 +91,7 @@ def ajout_article():
             'article.jinja',
             titre_h2='Les 5 derniers produits à échéanger',
             titre_h3= titre,
-            sous_titre= categorie,
+            sous_titre= categorie_value,
             # trouvé une facon d'enregistrer l'image et l'afficher
             src_image_article= '../static/images/image_par_default.jpg',
             message= description,
@@ -110,7 +115,7 @@ def liste_article():
 
 
 def insertion_objet(u_titre, u_description, u_photo, u_categorie):
-    """Pour démontrer une insertion"""
+    """insertion d'un objet"""
 
     with bd.creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
@@ -122,3 +127,21 @@ def insertion_objet(u_titre, u_description, u_photo, u_categorie):
                 (u_titre, u_description, u_photo, u_categorie)
             )
 
+
+
+def recuperation_id_categorie(u_categorie):
+    """Pour recuperer un id de catégorie"""
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            # Insertion de objet
+            curseur.execute(
+                'SELECT id FROM `categories` '+
+                'WHERE description = %s', (u_categorie)
+            )
+            result = curseur.fetchone()
+            if result:
+                return result[0]  # Renvoie l'ID de la catégorie trouvée
+            else:
+                # Si aucune correspondance n'est trouvée, vous pouvez choisir de retourner None ou générer une exception, par exemple :
+                raise ValueError("Catégorie non trouvée")
