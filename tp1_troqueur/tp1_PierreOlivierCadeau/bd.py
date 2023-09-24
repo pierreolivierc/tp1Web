@@ -14,7 +14,7 @@ def creer_connexion():
         user="garneau",
         password="qwerty123",
         host="127.0.0.1",
-        database="demo",
+        database="tp1_troqueur",
         raise_on_warnings=True
     )
 

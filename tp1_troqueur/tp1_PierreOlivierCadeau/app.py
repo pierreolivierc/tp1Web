@@ -9,6 +9,17 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+# Liste des sous-répertoires vers "ajouts"
+app.config['MORCEAUX_VERS_AJOUTS'] = ["static", "images", "ajouts"]
+
+# Pour donner static/images/ajouts". Assurez-vous que ce dossier existe !
+app.config['ROUTE_VERS_AJOUTS'] = "/".join(app.config['MORCEAUX_VERS_AJOUTS'])
+
+app.config['CHEMIN_VERS_AJOUTS'] = os.path.join(
+    app.instance_path.replace("instance", ""),
+    *app.config['MORCEAUX_VERS_AJOUTS']
+)
+
 def lister_routes():
     """Liste les routes pour le menu"""
     return [
@@ -33,7 +44,7 @@ def index():
         'article.jinja',
         titre_h2='Les 5 derniers cas répertorié',
         titre_h3='Test',
-        src_image_article= '../static/images/scp1471.jpg',
+        src_image_article= '../static/images/image_par_default.jpg',
         message="Description d'article!",
         routes=lister_routes()
     )
@@ -50,14 +61,34 @@ def ajout_article():
 
         # attribution de la date comme nom pour classer les images
         maintenant = datetime.datetime.now()
-        nom_image = maintenant.strftime("%Y-%m-%d %H:%M:%S")
+        nom_image = maintenant.strftime("%Y-%m-%d-%H:%M:%S") + ".jpg"
+
+        # insertion a la bd
+        insertion_objet(titre, description, nom_image, 1)
+
+        # fichier = request.files['image']
+
+        # if not fichier:
+            # ajout d'une image par défault
+            # src = '../static/images/image_par_default.jpg'
+        # else:
+            # Mettra des / ou \ dépendamment de l'OS
+            # chemin_complet = os.path.join(
+            #    app.config['CHEMIN_VERS_AJOUTS'], nom_image
+            # )
+
+            # fichier.save(chemin_complet)
+
+            # src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
+
 
         return render_template(
             'article.jinja',
             titre_h2='Les 5 derniers cas répertorié',
             titre_h3= titre,
             sous_titre= categorie,
-            src_image_article='../static/images/scp1471.jpg',
+            # trouvé une facon d'enregistrer l'image et l'afficher
+            src_image_article= '../static/images/image_par_default.jpg',
             message= description,
             routes=lister_routes()
         )
@@ -78,7 +109,7 @@ def liste_article():
     )
 
 
-def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_commentaires):
+def insertion_objet(u_titre, u_description, u_photo, u_categorie):
     """Pour démontrer une insertion"""
 
     with bd.creer_connexion() as connexion:
@@ -87,7 +118,7 @@ def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_commentaires
             curseur.execute(
                 "INSERT INTO `objets` " +
                 "(`id`, `titre`, `description`, `photo`, `categorie`) " +
-                "VALUES (" +
-                "NULL, %(u_titre)s, %(u_description)s, %(u_photo)s, %(u_categorie)s, %(u_commentaires)s )"
+                "VALUES (NULL, %s, %s, %s, %s)",
+                (u_titre, u_description, u_photo, u_categorie)
             )
 
