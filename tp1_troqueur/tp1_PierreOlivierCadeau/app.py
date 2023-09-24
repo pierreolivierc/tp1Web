@@ -63,7 +63,7 @@ def ajout_article():
 
         #récupération du ID catégorie
         categorie_value = request.form['categorie']
-        #categorie = recuperation_id_categorie(categorie_value)
+        categorie = recuperation_id_categorie(categorie_value)
 
         # attribution de la date comme nom pour classer les images
         maintenant = datetime.datetime.now()
@@ -93,7 +93,7 @@ def ajout_article():
             titre_onglet='Ajout de produit',
             titre_h2='Les 5 derniers produits à échéanger',
             titre_h3= titre,
-            sous_titre= categorie_value,
+            sous_titre= categorie,
             # trouvé une facon d'enregistrer l'image et l'afficher
             src_image_article= '../static/images/image_par_default.jpg',
             message= description,
@@ -143,9 +143,4 @@ def recuperation_id_categorie(u_categorie):
                 'SELECT id FROM `categories` '+
                 'WHERE description = %s', (u_categorie,)
             )
-            result = curseur.fetchone()
-            if result:
-                return result[0]  # Renvoie l'ID de la catégorie trouvée
-            else:
-                # Si aucune correspondance n'est trouvée, vous pouvez choisir de retourner None ou générer une exception, par exemple :
-                raise ValueError("Catégorie non trouvée")
+            return curseur.fetchone()
