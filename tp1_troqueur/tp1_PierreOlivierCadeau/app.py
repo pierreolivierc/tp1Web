@@ -62,7 +62,7 @@ def ajout_article():
 
         #récupération du ID catégorie
         categorie_value = request.form['categorie']
-        categorie = recuperation_id_categorie([categorie_value])
+        #categorie = recuperation_id_categorie(categorie_value)
 
         # attribution de la date comme nom pour classer les images
         maintenant = datetime.datetime.now()
@@ -137,7 +137,7 @@ def recuperation_id_categorie(u_categorie):
             # Insertion de objet
             curseur.execute(
                 'SELECT id FROM `categories` '+
-                'WHERE description = %s', (u_categorie)
+                'WHERE description = %s', (u_categorie,)
             )
             result = curseur.fetchone()
             if result:
