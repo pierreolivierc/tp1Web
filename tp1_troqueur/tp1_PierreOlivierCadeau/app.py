@@ -29,11 +29,11 @@ def lister_routes():
         },
         {
             'route': '/ajout_article',
-            'nom': "Ajout d'un article"
+            'nom': "Ajout d'un produit"
         },
         {
             'route': '/details_objet',
-            'nom': 'Tous les articles'
+            'nom': 'Tous les produits'
         }
     ]
 
@@ -42,7 +42,7 @@ def index():
     """Affiche la page d'accueil"""
     return render_template(
         'article.jinja',
-        titre_h2='Les 5 derniers cas répertorié',
+        titre_h2='Les 5 derniers produits à échéanger',
         titre_h3='Test',
         src_image_article= '../static/images/image_par_default.jpg',
         message="Description d'article!",
@@ -84,7 +84,7 @@ def ajout_article():
 
         return render_template(
             'article.jinja',
-            titre_h2='Les 5 derniers cas répertorié',
+            titre_h2='Les 5 derniers produits à échéanger',
             titre_h3= titre,
             sous_titre= categorie,
             # trouvé une facon d'enregistrer l'image et l'afficher
