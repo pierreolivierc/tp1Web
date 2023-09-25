@@ -42,12 +42,14 @@ def lister_routes():
 @app.route('/')
 def index():
     """Affiche la page d'accueil"""
+    #objets_recuperer = recuperation_objet()
+
     return render_template(
-        'article.jinja',
+        'accueil.jinja',
         titre_onglet = 'Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
         titre_h3='Test',
-        src_image_article= '../static/images/ajouts/image_par_default.jpg',
+        src_image_article= '../static/images/image_par_default.jpg',
         message="Description d'article!",
         details= '/details',
         routes=lister_routes()
@@ -78,26 +80,13 @@ def modifier_objet():
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
-        # attribution de la date comme nom pour classer les images
-        maintenant = datetime.datetime.now()
-        nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
-
+        nom_image = enregistrement_image()
         # insertion a la bd
-        insertion_objet(titre, description, nom_image, 1)
+        insertion_objet(titre, description, nom_image, categorie)
 
-        fichier = request.files['image']
-
-        # Mettra des / ou \ dépendamment de l'OS
-        chemin_complet = os.path.join(
-            app.config['CHEMIN_VERS_AJOUTS'], nom_image
-        )
-
-        fichier.save(chemin_complet)
-
-        src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
 
         return render_template(
-            'article.jinja',
+            'accueil.jinja',
             titre_onglet='Modification du produit',
             titre_h2="Modification du produit",
             titre_h3=titre,
@@ -127,44 +116,17 @@ def ajout_article():
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
-
-        fichier = request.files['image']
-        if not fichier:
-            # L'utilisateur n'a pas envoyé de fichier
-            return render_template(
-                'formulaire.jinja',
-                titre_h2="Ajout d'un produit",
-                titre_onglet='Ajout de produit',
-                routes=lister_routes()
-            )
-
-
-        # attribution de la date comme nom pour classer les images
-        maintenant = datetime.datetime.now()
-        nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
+        nom_image = enregistrement_image()
 
         # insertion a la bd
         insertion_objet(titre, description, nom_image, categorie)
 
-        # Mettra des / ou \ dépendamment de l'OS
-        chemin_complet = os.path.join(
-        app.config['CHEMIN_VERS_AJOUTS'], nom_image
-        )
-
-        fichier.save(chemin_complet)
-
-        src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
-
 
         return render_template(
-            'article.jinja',
+            'insertion_reussi_ou_echec.jinja',
             titre_onglet='Ajout de produit',
-            titre_h2="Ajout d'un produit",
-            titre_h3= titre,
-            sous_titre= categorie_value,
-            # trouvé une facon d'enregistrer l'image et l'afficher
-            src_image_article= '../static/images/image_par_default.jpg',
-            message= description,
+            titre_h2="Insertion de l'image",
+            message= "L'insertion de l'image à bien réussi!",
             routes=lister_routes()
         )
     else:
@@ -179,16 +141,18 @@ def ajout_article():
 def liste_article():
     """faire une boucle pour afficher tous les objets"""
 
-    tous_les_objets = recuperation_objet()
+    objets = recuperation_objet()
 
     #afficher plusieurs card
-    for un_objet in tous_les_objets:
-        return render_template(
-            'article.jinja',
-            titre_onglet='Tous les produits',
-            titre_h1='Bonjour!',
-            message= tous_les_objets,
-            routes=lister_routes()
+
+    return render_template(
+        'afficher_tous_les_articles.jinja',
+        titre_onglet='Accueil',
+        titre_h2='Les 5 derniers produits à échéanger',
+        objets_recuperer = objets,
+        src_image_article='../static/images/image_par_default.jpg',
+        details='/details',
+        routes=lister_routes()
         )
 
 
@@ -205,7 +169,28 @@ def insertion_objet(u_titre, u_description, u_photo, u_categorie):
                 (u_titre, u_description, u_photo, u_categorie)
             )
 
+def enregistrement_image():
+    """Enregistrement de l'image recu au formulaire"""
+    fichier = request.files['image']
+    if not fichier:
+        # L'utilisateur n'a pas envoyé de fichier
+        # ne fonctionne pas pour le moment
+        fichier = '../static/images/image_par_default.jpg'
 
+    # attribution de la date comme nom pour classer les images
+    maintenant = datetime.datetime.now()
+    nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
+
+    # Mettra des / ou \ dépendamment de l'OS
+    chemin_complet = os.path.join(
+        app.config['CHEMIN_VERS_AJOUTS'], nom_image
+    )
+
+    fichier.save(chemin_complet)
+
+    src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
+
+    return nom_image
 
 def recuperation_id_categorie(u_categorie):
     """Pour recuperer un id de catégorie"""
@@ -226,9 +211,11 @@ def recuperation_objet():
 
     with bd.creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
-            # Insertion de objet
+            # Sélection de tous les objets
             curseur.execute(
-                'SELECT * FROM `objets` '
+                'SELECT objets.*, categories.description AS categorie_description ' +
+                'FROM `objets` '+
+                'JOIN `categories` ON objets.categorie = categories.id '+
+                'ORDER BY objets.photo '
             )
-
             return curseur.fetchone()

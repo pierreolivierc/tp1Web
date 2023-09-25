@@ -1,0 +1,25 @@
+{# Template pour l'index #}
+{% extends "base.jinja" %}
+
+{% block contenu %}
+    <div>
+    {% for i in objets_recuperer %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{ src_image_article }}" class="card-img-top" alt="{{ alt_image_article }}">
+            <div class="card-body">
+                <h3 class="card-title">
+                    {{ i.titre }}
+                </h3>
+                <h4 class="card-subtitle mb-2 text-muted">
+                    {{ i.categorie_description }}
+                </h4>
+                <p class="card-text">
+                    {{ i.description }}
+                </p>
+                <a href="{{ details }}" class="btn btn-primary">Détails</a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}
