@@ -221,6 +221,6 @@ def recuperation_objet():
                 'SELECT objets.*, categories.description AS categorie_description ' +
                 'FROM `objets` '+
                 'JOIN `categories` ON objets.categorie = categories.id '+
-                'ORDER BY objets.photo '
+                'ORDER BY objets.photo DESC '
             )
             return curseur.fetchall()
