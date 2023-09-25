@@ -67,25 +67,21 @@ def ajout_article():
 
         # attribution de la date comme nom pour classer les images
         maintenant = datetime.datetime.now()
-        nom_image = maintenant.strftime("%Y-%m-%d-%H:%M:%S") + ".jpg"
+        nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
 
         # insertion a la bd
         insertion_objet(titre, description, nom_image, 1)
 
-        # fichier = request.files['image']
+        fichier = request.files['image']
 
-        # if not fichier:
-            # ajout d'une image par défault
-            # src = '../static/images/image_par_default.jpg'
-        # else:
-            # Mettra des / ou \ dépendamment de l'OS
-            # chemin_complet = os.path.join(
-            #    app.config['CHEMIN_VERS_AJOUTS'], nom_image
-            # )
+        # Mettra des / ou \ dépendamment de l'OS
+        chemin_complet = os.path.join(
+        app.config['CHEMIN_VERS_AJOUTS'], nom_image
+        )
 
-            # fichier.save(chemin_complet)
+        fichier.save(chemin_complet)
 
-            # src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
+        src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
 
 
         return render_template(
