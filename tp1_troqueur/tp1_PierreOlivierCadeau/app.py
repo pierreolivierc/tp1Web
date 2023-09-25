@@ -49,9 +49,13 @@ def index():
         titre_h3='Test',
         src_image_article= '../static/images/image_par_default.jpg',
         message="Description d'article!",
+        details= '/details',
         routes=lister_routes()
     )
 
+#@app.route('details')
+#def details_objet():
+#    """Page des détails d'un objet"""
 
 @app.route('/ajout_article', methods=["GET", "POST"])
 def ajout_article():

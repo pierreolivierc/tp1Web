@@ -1,8 +1,7 @@
-{# Template pour l'index #}
 {% extends "base.jinja" %}
 
 {% block contenu %}
-    <div class="card" style="width: 18rem;">
+<div class="card" style="width: 18rem;">
         <img src="{{ src_image_article }}" class="card-img-top" alt="{{ alt_image_article }}">
         <div class="card-body">
             <h3 class="card-title">
@@ -17,6 +16,4 @@
             <a href="{{ details }}" class="btn btn-primary">Détails</a>
         </div>
     </div>
-
-
 {% endblock %}
