@@ -5,27 +5,27 @@
         <h2>Ajout d'un produit</h2>
         <form action="#" method="post">
                 <div>
-                    <label for="titre">Titre:</label>
-                    <input type="text" name="titre" id="titre" />
+                    <label for="titre" class="form-label">Titre:</label>
+                    <input type="text" class="form-control" name="titre" id="titre" />
                 </div>
                 <div>
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" cols="30" rows="10"></textarea>
+                    <label for="description" class="form-label" >Description:</label>
+                    <textarea id="description" class="form-control" name="description" cols="30" rows="10"></textarea>
                 </div>
                 <div>
-                    <label for="categorie">Note obtenue avec ce travail:</label>
-                    <select name="categorie" id="categorie">
+                    <label for="categorie" class="form-label">Note obtenue avec ce travail:</label>
+                    <select name="categorie" class="form-select" id="categorie">
                         <option value="Occasion">Occasion</option>
                         <option value="Presque neuf">Presque neuf</option>
                         <option value="Neuf">Neuf</option>
                     </select>
                 </div>
-                <div>
-                    <label for="image">Image:</label>
-                    <input type="file" name="image" id="image" accept="image/png, image/jpeg"/>
+                <div class="input-group mb-3">
+                    <label for="image" class="input-group-text">Image:</label>
+                    <input type="file" class="form-control" name="image" id="image" accept="image/png, image/jpeg"/>
                 </div>
                 <div>
-                    <button type="submit">Envoyer</button>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
                 </div>
         </form>
 

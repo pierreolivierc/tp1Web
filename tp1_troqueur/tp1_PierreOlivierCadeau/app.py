@@ -32,7 +32,7 @@ def lister_routes():
             'nom': "Ajout d'un produit"
         },
         {
-            'route': '/details_objet',
+            'route': '/liste_tous_les_objets',
             'nom': 'Tous les produits'
         }
     ]
@@ -106,16 +106,21 @@ def ajout_article():
             routes=lister_routes()
         )
 
-@app.route('/details_objet')
+@app.route('/liste_tous_les_objets')
 def liste_article():
-    """Page d'index"""
-    return render_template(
-        'article.jinja',
-        titre_onglet='Tous les produits',
-        titre_h1='Bonjour!',
-        message='Bienvenu sur la démo des template!',
-        routes=lister_routes()
-    )
+    """faire une boucle pour afficher tous les objets"""
+
+    tous_les_objets = recuperation_objet()
+
+    #afficher plusieurs card
+    for un_objet in tous_les_objets:
+        return render_template(
+            'article.jinja',
+            titre_onglet='Tous les produits',
+            titre_h1='Bonjour!',
+            message= tous_les_objets,
+            routes=lister_routes()
+        )
 
 
 def insertion_objet(u_titre, u_description, u_photo, u_categorie):
@@ -142,5 +147,16 @@ def recuperation_id_categorie(u_categorie):
             curseur.execute(
                 'SELECT id FROM `categories` '+
                 'WHERE description = %s', (u_categorie,)
+            )
+            return curseur.fetchone()
+
+def recuperation_objet():
+    """Pour recuperer tous les objets"""
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            # Insertion de objet
+            curseur.execute(
+                'SELECT * FROM `objets` '
             )
             return curseur.fetchone()
