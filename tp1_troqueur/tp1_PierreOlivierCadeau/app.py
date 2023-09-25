@@ -53,9 +53,67 @@ def index():
         routes=lister_routes()
     )
 
-#@app.route('details')
-#def details_objet():
-#    """Page des détails d'un objet"""
+@app.route('/details')
+def details_objet():
+    """Page des détails d'un objet"""
+    return render_template(
+        'details_objet.jinja',
+        titre_onglet='Accueil',
+        titre_h3='titre detail',
+        titre_h4='Test',
+        src_image_article='../static/images/image_par_default.jpg',
+        message="Description d'article!",
+        modifier='/modifier',
+        routes=lister_routes()
+    )
+
+@app.route('/modifier', methods=["GET", "POST"])
+def modifier_objet():
+    """Page des détails d'un objet"""
+    if request.method == "POST":
+        titre = request.form['titre']
+        description = request.form['description']
+
+        # récupération du ID catégorie
+        categorie_value = request.form['categorie']
+        categorie = recuperation_id_categorie(categorie_value)
+
+        # attribution de la date comme nom pour classer les images
+        maintenant = datetime.datetime.now()
+        nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
+
+        # insertion a la bd
+        insertion_objet(titre, description, nom_image, 1)
+
+        fichier = request.files['image']
+
+        # Mettra des / ou \ dépendamment de l'OS
+        chemin_complet = os.path.join(
+            app.config['CHEMIN_VERS_AJOUTS'], nom_image
+        )
+
+        fichier.save(chemin_complet)
+
+        src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
+
+        return render_template(
+            'article.jinja',
+            titre_onglet='Modification du produit',
+            titre_h2="Modification du produit",
+            titre_h3=titre,
+            sous_titre=categorie,
+            # trouvé une facon d'enregistrer l'image et l'afficher
+            src_image_article='../static/images/image_par_default.jpg',
+            message=description,
+            routes=lister_routes()
+        )
+    else:
+        return render_template(
+            'formulaire.jinja',
+            titre_h2="Modification du produit",
+            titre_onglet="Modification du produit",
+            routes=lister_routes()
+        )
 
 @app.route('/ajout_article', methods=["GET", "POST"])
 def ajout_article():
@@ -91,7 +149,7 @@ def ajout_article():
         return render_template(
             'article.jinja',
             titre_onglet='Ajout de produit',
-            titre_h2='Les 5 derniers produits à échéanger',
+            titre_h2="Ajout d'un produit",
             titre_h3= titre,
             sous_titre= categorie,
             # trouvé une facon d'enregistrer l'image et l'afficher
@@ -102,6 +160,7 @@ def ajout_article():
     else:
         return render_template(
             'formulaire.jinja',
+            titre_h2="Ajout d'un produit",
             titre_onglet='Ajout de produit',
             routes=lister_routes()
         )
