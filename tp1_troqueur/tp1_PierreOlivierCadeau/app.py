@@ -8,6 +8,7 @@ import datetime
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+# TODO AJOUTER COLONE DATE DANS MY SQL
 
 # Liste des sous-répertoires vers "ajouts"
 app.config['MORCEAUX_VERS_AJOUTS'] = ["static", "images", "ajouts"]
@@ -42,15 +43,14 @@ def lister_routes():
 @app.route('/')
 def index():
     """Affiche la page d'accueil"""
-    #objets_recuperer = recuperation_objet()
+    objets = recuperation_objet()
 
     return render_template(
         'accueil.jinja',
         titre_onglet = 'Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
-        titre_h3='Test',
+        objets_recuperer = objets,
         src_image_article= '../static/images/image_par_default.jpg',
-        message="Description d'article!",
         details= '/details',
         routes=lister_routes()
     )
@@ -81,8 +81,11 @@ def modifier_objet():
         categorie = recuperation_id_categorie(categorie_value)
 
         nom_image = enregistrement_image()
+
+        date = request.form['date_input']
+
         # insertion a la bd
-        insertion_objet(titre, description, nom_image, categorie)
+        insertion_objet(titre, description, nom_image, categorie, date)
 
 
         return render_template(
@@ -118,8 +121,10 @@ def ajout_article():
 
         nom_image = enregistrement_image()
 
+        date = request.form['date_input']
+
         # insertion a la bd
-        insertion_objet(titre, description, nom_image, categorie)
+        insertion_objet(titre, description, nom_image, categorie, date)
 
 
         return render_template(
@@ -156,7 +161,7 @@ def liste_article():
         )
 
 
-def insertion_objet(u_titre, u_description, u_photo, u_categorie):
+def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_date):
     """insertion d'un objet"""
 
     with bd.creer_connexion() as connexion:
@@ -164,9 +169,9 @@ def insertion_objet(u_titre, u_description, u_photo, u_categorie):
             # Insertion de objet
             curseur.execute(
                 "INSERT INTO `objets` " +
-                "(`id`, `titre`, `description`, `photo`, `categorie`) " +
-                "VALUES (NULL, %s, %s, %s, %s)",
-                (u_titre, u_description, u_photo, u_categorie)
+                "(`id`, `titre`, `description`, `photo`, `categorie`, `date`) " +
+                "VALUES (NULL, %s, %s, %s, %s , %s)",
+                (u_titre, u_description, u_photo, u_categorie, u_date)
             )
 
 def enregistrement_image():
@@ -218,4 +223,4 @@ def recuperation_objet():
                 'JOIN `categories` ON objets.categorie = categories.id '+
                 'ORDER BY objets.photo '
             )
-            return curseur.fetchone()
+            return curseur.fetchall()
