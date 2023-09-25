@@ -3,9 +3,9 @@
 
 {% block contenu %}
     <div>
-    {% for i in objets_recuperer %}
+    {% for i in objets_recuperer[:5] %}
         <div class="card" style="width: 18rem;">
-            <img src="{{ src_image_article }}" class="card-img-top" alt="{{ alt_image_article }}">
+            <img src="{{ src }}{{ i.photo }}" class="card-img-top" alt="{{ alt_image_article }}">
             <div class="card-body">
                 <h3 class="card-title">
                     {{ i.titre }}

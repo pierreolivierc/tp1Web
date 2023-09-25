@@ -50,7 +50,7 @@ def index():
         titre_onglet = 'Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
         objets_recuperer = objets,
-        src_image_article= '../static/images/image_par_default.jpg',
+        src= '../static/images/ajouts/',
         details= '/details',
         routes=lister_routes()
     )
@@ -63,7 +63,7 @@ def details_objet():
         titre_onglet='Accueil',
         titre_h3='titre detail',
         titre_h4='Test',
-        src_image_article='../static/images/ajouts/image_par_default.jpg',
+        src= '../static/images/ajouts/',
         message="Description d'article!",
         modifier='/modifier',
         routes=lister_routes()
@@ -95,7 +95,7 @@ def modifier_objet():
             titre_h3=titre,
             sous_titre=categorie,
             # trouvé une facon d'enregistrer l'image et l'afficher
-            src_image_article='../static/images/image_par_default.jpg',
+            src= '../static/images/ajouts/',
             message=description,
             routes=lister_routes()
         )
@@ -155,7 +155,7 @@ def liste_article():
         titre_onglet='Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
         objets_recuperer = objets,
-        src_image_article='../static/images/image_par_default.jpg',
+        src= '../static/images/ajouts/',
         details='/details',
         routes=lister_routes()
         )
