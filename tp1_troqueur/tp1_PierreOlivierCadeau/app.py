@@ -47,7 +47,7 @@ def index():
         titre_onglet = 'Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
         titre_h3='Test',
-        src_image_article= '../static/images/image_par_default.jpg',
+        src_image_article= '../static/images/ajouts/image_par_default.jpg',
         message="Description d'article!",
         details= '/details',
         routes=lister_routes()
@@ -61,7 +61,7 @@ def details_objet():
         titre_onglet='Accueil',
         titre_h3='titre detail',
         titre_h4='Test',
-        src_image_article='../static/images/image_par_default.jpg',
+        src_image_article='../static/images/ajouts/image_par_default.jpg',
         message="Description d'article!",
         modifier='/modifier',
         routes=lister_routes()
@@ -127,14 +127,24 @@ def ajout_article():
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
+
+        fichier = request.files['image']
+        if not fichier:
+            # L'utilisateur n'a pas envoyé de fichier
+            return render_template(
+                'formulaire.jinja',
+                titre_h2="Ajout d'un produit",
+                titre_onglet='Ajout de produit',
+                routes=lister_routes()
+            )
+
+
         # attribution de la date comme nom pour classer les images
         maintenant = datetime.datetime.now()
         nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
 
         # insertion a la bd
-        insertion_objet(titre, description, nom_image, 1)
-
-        fichier = request.files['image']
+        insertion_objet(titre, description, nom_image, categorie)
 
         # Mettra des / ou \ dépendamment de l'OS
         chemin_complet = os.path.join(
@@ -151,7 +161,7 @@ def ajout_article():
             titre_onglet='Ajout de produit',
             titre_h2="Ajout d'un produit",
             titre_h3= titre,
-            sous_titre= categorie,
+            sous_titre= categorie_value,
             # trouvé une facon d'enregistrer l'image et l'afficher
             src_image_article= '../static/images/image_par_default.jpg',
             message= description,
@@ -207,7 +217,9 @@ def recuperation_id_categorie(u_categorie):
                 'SELECT id FROM `categories` '+
                 'WHERE description = %s', (u_categorie,)
             )
-            return curseur.fetchone()
+
+            categorie = curseur.fetchone()
+            return categorie["id"]
 
 def recuperation_objet():
     """Pour recuperer tous les objets"""
@@ -218,4 +230,5 @@ def recuperation_objet():
             curseur.execute(
                 'SELECT * FROM `objets` '
             )
+
             return curseur.fetchone()

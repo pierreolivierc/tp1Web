@@ -2,7 +2,7 @@
 {% extends "base.jinja" %}
 
 {% block contenu %}
-        <form action="#" method="post">
+        <form action="#" method="post" enctype="multipart/form-data" novalidate>
                 <div>
                     <label for="titre" class="form-label">Titre:</label>
                     <input type="text" class="form-control" name="titre" id="titre" />
@@ -21,7 +21,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <label for="image" class="input-group-text">Image:</label>
-                    <input type="file" class="form-control" name="image" id="image" accept="image/png, image/jpeg"/>
+                    <input type="file" class="form-control" name="image" id="image"/>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary">Envoyer</button>
