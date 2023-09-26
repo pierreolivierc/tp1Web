@@ -79,7 +79,6 @@ def details_objet():
 def modifier_objet():
     """Page des détails d'un objet"""
     if request.method == "POST":
-        id = request.form['objet_choisi']
 
         titre = request.form['titre']
         description = request.form['description']
@@ -90,7 +89,13 @@ def modifier_objet():
 
         nom_image = enregistrement_image()
 
-        date = request.form['date_input']
+        id = request.form['objet_choisi']
+
+        maintenant = datetime.datetime.now()
+        date = maintenant.strftime("%Y-%m-%d")
+
+        #Modifcation de l'objet dans la base de donnée
+        modfication_objet(titre, description, nom_image, categorie, date, id)
 
 
         return render_template(
@@ -101,6 +106,9 @@ def modifier_objet():
             routes=lister_routes()
         )
     else:
+
+        id = request.args.get['objet_choisi']
+
         return render_template(
             'formulaire.jinja',
             titre_h2="Modification d'un produit",
@@ -122,7 +130,9 @@ def ajout_article():
 
         nom_image = enregistrement_image()
 
-        date = request.form['date_input']
+        maintenant = datetime.datetime.now()
+        date = maintenant.strftime("%Y-%m-%d")
+
 
         # insertion a la bd
         insertion_objet(titre, description, nom_image, categorie, date)
@@ -174,6 +184,7 @@ def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_date):
                 (u_titre, u_description, u_photo, u_categorie, u_date)
             )
 
+
 def modfication_objet(u_titre, u_description, u_photo, u_categorie, u_date, u_id):
     """Modification d'un objet"""
 
@@ -184,6 +195,7 @@ def modfication_objet(u_titre, u_description, u_photo, u_categorie, u_date, u_id
                 "WHERE `id` = %s",
                 (u_titre, u_description, u_photo, u_categorie, u_date, u_id)
             )
+
 
 def enregistrement_image():
     """Enregistrement de l'image recu au formulaire"""
@@ -208,6 +220,7 @@ def enregistrement_image():
 
     return nom_image
 
+
 def recuperation_id_categorie(u_categorie):
     """Pour recuperer un id de catégorie"""
 
@@ -221,6 +234,7 @@ def recuperation_id_categorie(u_categorie):
 
             categorie = curseur.fetchone()
             return categorie["id"]
+
 
 def recuperation_objet():
     """Pour recuperer tous les objets"""
