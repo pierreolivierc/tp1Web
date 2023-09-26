@@ -102,8 +102,21 @@ def modifier_objet():
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
+        maintenant = datetime.now()
+        date = maintenant.strftime("%Y-%m-%d")
+
         id = request.args['objet_choisi']
         objet = recuperation_objet_avec_id(id)
+
+        if not titre or not description:
+
+            return render_template(
+                'insertion_reussi_ou_echec.jinja',
+                titre_onglet="Ajout d'un produit",
+                titre_h2="Ajout d'un produit",
+                message="Erreur: le formulaire est incomplet",
+                routes=lister_routes()
+            )
 
         nom_image = enregistrement_image()
         if not nom_image :
@@ -116,8 +129,6 @@ def modifier_objet():
             )
 
         supprimer_image(objet["photo"])
-        maintenant = datetime.now()
-        date = maintenant.strftime("%Y-%m-%d")
 
         #Modifcation de l'objet dans la base de donnée
         modfication_objet(titre, description, nom_image, categorie, date, id)
@@ -155,7 +166,25 @@ def ajout_article():
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
+        if not titre or not description:
+
+            return render_template(
+                'insertion_reussi_ou_echec.jinja',
+                titre_onglet="Ajout d'un produit",
+                titre_h2="Ajout d'un produit",
+                message="Erreur: le formulaire est incomplet",
+                routes=lister_routes()
+            )
+
         nom_image = enregistrement_image()
+        if not nom_image :
+            return render_template(
+                'insertion_reussi_ou_echec.jinja',
+                titre_onglet="Ajout d'un produit",
+                titre_h2="Ajout d'un produit",
+                message="Erreur: l'image est manquante",
+                routes=lister_routes()
+            )
 
         maintenant = datetime.now()
         date_creation = maintenant.strftime("%Y-%m-%d")
