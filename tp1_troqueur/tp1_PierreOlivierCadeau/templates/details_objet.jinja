@@ -7,17 +7,17 @@
             <h2>
                 {{ objets_recuperer.titre}}
             </h2>
-            <h3>
+            <h3 style="color: rgb(128,128,128);">
                 {{ objets_recuperer.categorie_description }}
             </h3>
             <p>
                 {{ objets_recuperer.description }}
             </p>
-            <form action="/modifier" method="GET">
+            <form class="mb-4" action="/modifier" method="GET">
                     <input type="hidden" name="objet_choisi" value="{{ objets_recuperer.id }}"/>
                     <button type="submit" class="btn btn-primary">Modifier</button>
             </form>
-            <h3>
+            <h3 class="blockquote-footer">
                 {{ date_creation }}
             </h3>
             <form action="#">
