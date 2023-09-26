@@ -5,7 +5,7 @@ import re
 import bd
 import os
 import datetime
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
 # TODO AJOUTER COLONE DATE DANS MY SQL
@@ -51,28 +51,36 @@ def index():
         titre_h2='Les 5 derniers produits à échéanger',
         objets_recuperer = objets,
         src= '../static/images/ajouts/',
-        details= '/details',
         routes=lister_routes()
     )
 
-@app.route('/details')
+
+@app.route('/details', methods=["GET", "POST"])
 def details_objet():
-    """Page des détails d'un objet"""
-    return render_template(
-        'details_objet.jinja',
-        titre_onglet='Accueil',
-        titre_h3='titre detail',
-        titre_h4='Test',
-        src= '../static/images/ajouts/',
-        message="Description d'article!",
-        modifier='/modifier',
-        routes=lister_routes()
-    )
+    if request.method == "POST":
+        id = request.form['objet_choisi']
+        objet = recuperation_objet_avec_id(id)
+
+        return render_template(
+            'details_objet.jinja',
+            objets_recuperer=objet,
+            titre_onglet='Accueil',
+            src= '../static/images/ajouts/',
+            modifier='/modifier',
+            routes=lister_routes()
+        )
+    else:
+        # Gérez le cas où le formulaire n'a pas été soumis
+        # Par exemple, redirigez l'utilisateur vers une autre page
+        return redirect('/')
+
 
 @app.route('/modifier', methods=["GET", "POST"])
 def modifier_objet():
     """Page des détails d'un objet"""
     if request.method == "POST":
+        id = request.form['objet_choisi']
+
         titre = request.form['titre']
         description = request.form['description']
 
@@ -84,26 +92,19 @@ def modifier_objet():
 
         date = request.form['date_input']
 
-        # insertion a la bd
-        insertion_objet(titre, description, nom_image, categorie, date)
-
 
         return render_template(
-            'accueil.jinja',
+            'insertion_reussi_ou_echec.jinja',
             titre_onglet='Modification du produit',
-            titre_h2="Modification du produit",
-            titre_h3=titre,
-            sous_titre=categorie,
-            # trouvé une facon d'enregistrer l'image et l'afficher
-            src= '../static/images/ajouts/',
-            message=description,
+            titre_h2="Insertion de l'image",
+            message="L'insertion de l'image à bien réussi!",
             routes=lister_routes()
         )
     else:
         return render_template(
             'formulaire.jinja',
-            titre_h2="Modification du produit",
-            titre_onglet="Modification du produit",
+            titre_h2="Modification d'un produit",
+            titre_onglet='Modification du produit',
             routes=lister_routes()
         )
 
@@ -224,3 +225,18 @@ def recuperation_objet():
                 'ORDER BY objets.photo DESC '
             )
             return curseur.fetchall()
+
+
+def recuperation_objet_avec_id(u_id):
+    """Pour recuperer tous les objets"""
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            # Sélection de tous les objets
+            curseur.execute(
+                'SELECT objets.*, categories.description AS categorie_description '+
+                'FROM `objets` '+
+                'JOIN `categories` ON objets.categorie = categories.id '+
+                'WHERE objets.id =  %s', (u_id,)
+            )
+            return curseur.fetchone()

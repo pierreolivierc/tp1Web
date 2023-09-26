@@ -4,7 +4,7 @@
 {% block contenu %}
     <div class="p-2 d-flex">
     {% for i in objets_recuperer[:5] %}
-        <div class="card border border-warning align-items-stretch mx-2" style="width: 18rem;">
+        <div  class="card border border-warning align-items-stretch mx-2" style="width: 18rem;">
             <img src="{{ src }}{{ i.photo }}" class="card-img-top" alt="{{ alt_image_article }}">
             <div class="card-body">
                 <h3 class="card-title">
@@ -16,7 +16,10 @@
                 <p class="card-text">
                     {{ i.description }}
                 </p>
-                <a href="{{ details }}" class="btn btn-primary">Détails</a>
+                <form action="/details" method="POST">
+                    <input type="hidden" name="objet_choisi" value="{{ i.id }}"/>
+                    <button type="submit" class="btn btn-primary">Détails</button>
+                </form>
             </div>
         </div>
     {% endfor %}

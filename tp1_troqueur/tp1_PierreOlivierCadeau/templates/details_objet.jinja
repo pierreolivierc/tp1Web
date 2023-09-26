@@ -1,19 +1,22 @@
 {% extends "base.jinja" %}
 
 {% block contenu %}
-    <div>
-        <img src="{{ src_image_article }}" alt="{{ alt_image_article }}">
+    <div >
+        <img src="{{ src }}{{ objets_recuperer.photo }}" alt="{{ alt_image_article }}">
         <div>
             <h3>
-                {{ titre_h3 }}
+                {{ objets_recuperer.titre}}
             </h3>
             <h4>
-                {{ sous_titre }}
+                {{ objets_recuperer.categorie_description }}
             </h4>
             <p>
-                {{ message }}
+                {{ objets_recuperer.description }}
             </p>
-            <a href="{{ modifier }}" class="btn btn-primary">Modifier</a>
+            <form action="/modifier" method="GET">
+                    <input type="hidden" name="objet_choisi" value="{{ objets_recuperer.id }}"/>
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+            </form>
         </div>
     </div>
 {% endblock %}
