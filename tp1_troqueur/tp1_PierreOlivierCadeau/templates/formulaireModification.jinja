@@ -5,11 +5,11 @@
         <form action="#" method="post" enctype="multipart/form-data" novalidate>
                 <div>
                     <label for="titre" class="form-label">Titre:</label>
-                    <input type="text" class="form-control" name="titre" id="titre""/>
+                    <input type="text" class="form-control" name="titre" id="titre"  value="{{objets_recuperer.titre}}" />
                 </div>
                 <div>
                     <label for="description" class="form-label" >Description:</label>
-                    <textarea id="description" class="form-control" name="description" cols="30" rows="10"></textarea>
+                    <textarea id="description" class="form-control" name="description" cols="30" rows="10">{{objets_recuperer.description}}</textarea>
                 </div>
                 <div>
                     <label for="categorie" class="form-label">État de l'article a vendre:</label>

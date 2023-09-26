@@ -4,18 +4,28 @@
     <div >
         <img src="{{ src }}{{ objets_recuperer.photo }}" alt="{{ alt_image_article }}">
         <div>
-            <h3>
+            <h2>
                 {{ objets_recuperer.titre}}
-            </h3>
-            <h4>
+            </h2>
+            <h3>
                 {{ objets_recuperer.categorie_description }}
-            </h4>
+            </h3>
             <p>
                 {{ objets_recuperer.description }}
             </p>
             <form action="/modifier" method="GET">
                     <input type="hidden" name="objet_choisi" value="{{ objets_recuperer.id }}"/>
                     <button type="submit" class="btn btn-primary">Modifier</button>
+            </form>
+            <h3>
+                {{ date_creation }}
+            </h3>
+            <form action="#">
+                <select name="langue" class="form-select" id="langue">
+                    <option value="francais">francais</option>
+                    <option value="anglais">anglais</option>
+                </select>
+                <input type="submit" value="Soumettre">
             </form>
         </div>
     </div>

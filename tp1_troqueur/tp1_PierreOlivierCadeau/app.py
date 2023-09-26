@@ -1,19 +1,24 @@
 """
 TP1 web 3
 """
-import re
+
 import bd
 import os
-import datetime
+from datetime import date, datetime
 from flask import Flask, redirect, render_template, request
+from babel import numbers, dates
+from flask_babel import Babel
 
 app = Flask(__name__)
-# TODO AJOUTER COLONE DATE DANS MY SQL
 
-# Liste des sous-répertoires vers "ajouts"
-app.config['MORCEAUX_VERS_AJOUTS'] = ["static", "images", "ajouts"]
+app.config["BABEL_DEFAULT_LOCALE"] = "fr_CA"
 
-# Pour donner static/images/ajouts". Assurez-vous que ce dossier existe !
+babel = Babel(app)
+
+# Liste des sous-répertoires vers "objets"
+app.config['MORCEAUX_VERS_AJOUTS'] = ["static", "images", "objets"]
+
+# Pour donner static/images/objets". Assurez-vous que ce dossier existe !
 app.config['ROUTE_VERS_AJOUTS'] = "/".join(app.config['MORCEAUX_VERS_AJOUTS'])
 
 app.config['CHEMIN_VERS_AJOUTS'] = os.path.join(
@@ -50,7 +55,7 @@ def index():
         titre_onglet = 'Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
         objets_recuperer = objets,
-        src= '../static/images/ajouts/',
+        src= '../static/images/objets/',
         routes=lister_routes()
     )
 
@@ -61,11 +66,21 @@ def details_objet():
         id = request.form['objet_choisi']
         objet = recuperation_objet_avec_id(id)
 
+        # TODO CHANGEMENT DE LANGUE POUR LA DATE
+        #langue_selectionnee = request.form['langue']
+
+        #if langue_selectionnee == 'francais':
+            #date_convertie = dates.format_date(objet["date"], locale="fr_CA")
+        #else:
+        date_convertie = dates.format_date(objet["date"], locale="en_US")
+
+
         return render_template(
             'details_objet.jinja',
             objets_recuperer=objet,
             titre_onglet='Accueil',
-            src= '../static/images/ajouts/',
+            date_creation=date_convertie,
+            src= '../static/images/objets/',
             modifier='/modifier',
             routes=lister_routes()
         )
@@ -89,7 +104,7 @@ def modifier_objet():
 
         nom_image = enregistrement_image()
 
-        id = request.form['objet_choisi']
+        id = request.args['objet_choisi']
 
         maintenant = datetime.datetime.now()
         date = maintenant.strftime("%Y-%m-%d")
@@ -111,7 +126,8 @@ def modifier_objet():
         objet = recuperation_objet_avec_id(id)
 
         return render_template(
-            'formulaire.jinja',
+            'formulaireModification.jinja',
+            objets_recuperer=objet,
             titre_h2="Modification d'un produit",
             titre_onglet='Modification du produit',
             routes=lister_routes()
@@ -167,8 +183,7 @@ def liste_article():
         titre_onglet='Accueil',
         titre_h2='Les 5 derniers produits à échéanger',
         objets_recuperer = objets,
-        src= '../static/images/ajouts/',
-        details='/details',
+        src= '../static/images/objets/',
         routes=lister_routes()
         )
 
@@ -262,6 +277,6 @@ def recuperation_objet_avec_id(u_id):
                 'SELECT objets.*, categories.description AS categorie_description '+
                 'FROM `objets` '+
                 'JOIN `categories` ON objets.categorie = categories.id '+
-                'WHERE objets.id =  %s', (u_id,)
+                'WHERE objets.id =  %s', (u_id, )
             )
             return curseur.fetchone()
