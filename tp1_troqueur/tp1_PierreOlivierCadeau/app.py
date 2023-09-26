@@ -107,7 +107,8 @@ def modifier_objet():
         )
     else:
 
-        id = request.args.get['objet_choisi']
+        id = request.args['objet_choisi']
+        objet = recuperation_objet_avec_id(id)
 
         return render_template(
             'formulaire.jinja',
