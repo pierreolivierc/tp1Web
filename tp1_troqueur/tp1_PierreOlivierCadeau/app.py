@@ -167,12 +167,22 @@ def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_date):
 
     with bd.creer_connexion() as connexion:
         with connexion.get_curseur() as curseur:
-            # Insertion de objet
             curseur.execute(
                 "INSERT INTO `objets` " +
                 "(`id`, `titre`, `description`, `photo`, `categorie`, `date`) " +
                 "VALUES (NULL, %s, %s, %s, %s , %s)",
                 (u_titre, u_description, u_photo, u_categorie, u_date)
+            )
+
+def modfication_objet(u_titre, u_description, u_photo, u_categorie, u_date, u_id):
+    """Modification d'un objet"""
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute(
+                "UPDATE `objets` SET `titre` = %s, `description` = %s, `photo` = %s, `categorie` = %s, `date` = %s " +
+                "WHERE `id` = %s",
+                (u_titre, u_description, u_photo, u_categorie, u_date, u_id)
             )
 
 def enregistrement_image():
