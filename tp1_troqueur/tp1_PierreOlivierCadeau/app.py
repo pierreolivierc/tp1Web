@@ -104,10 +104,18 @@ def modifier_objet():
 
         id = request.args['objet_choisi']
         objet = recuperation_objet_avec_id(id)
-        supprimer_image(objet["photo"])
 
         nom_image = enregistrement_image()
+        if not nom_image :
+            return render_template(
+                'insertion_reussi_ou_echec.jinja',
+                titre_onglet="Ajout d'un produit",
+                titre_h2="Ajout d'un produit",
+                message="Erreur: l'image est manquante",
+                routes=lister_routes()
+            )
 
+        supprimer_image(objet["photo"])
         maintenant = datetime.now()
         date = maintenant.strftime("%Y-%m-%d")
 
@@ -116,10 +124,10 @@ def modifier_objet():
 
 
         return render_template(
-            'insertion_reussi_ou_echec.jinja',
-            titre_onglet='Modification du produit',
-            titre_h2="Insertion de l'image",
-            message="L'insertion de l'image à bien réussi!",
+               'insertion_reussi_ou_echec.jinja',
+            titre_onglet="Ajout d'une produit",
+            titre_h2="Ajout d'une produit",
+            message= "Le produit a bien été ajouté!",
             routes=lister_routes()
         )
     else:
@@ -159,9 +167,9 @@ def ajout_article():
 
         return render_template(
             'insertion_reussi_ou_echec.jinja',
-            titre_onglet='Ajout de produit',
-            titre_h2="Insertion de l'image",
-            message= "L'insertion de l'image à bien réussi!",
+            titre_onglet="Ajout d'une produit",
+            titre_h2="Ajout d'une produit",
+            message= "Le produit a bien été ajouté!",
             routes=lister_routes()
         )
     else:
@@ -219,10 +227,7 @@ def enregistrement_image():
     """Enregistrement de l'image recu au formulaire"""
     fichier = request.files['image']
     if not fichier:
-        # L'utilisateur n'a pas envoyé de fichier
-        # ne fonctionne pas pour le moment
-        fichier = '../static/images/image_par_default.jpg'
-
+        return None
     # attribution de la date comme nom pour classer les images
     maintenant = datetime.now()
     nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
