@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 25 sep. 2023 à 15:24
+-- Généré le : mar. 26 sep. 2023 à 18:54
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -57,8 +57,20 @@ CREATE TABLE IF NOT EXISTS `objets` (
   `description` varchar(2000) NOT NULL,
   `photo` varchar(50) DEFAULT NULL,
   `categorie` int NOT NULL,
+  `date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `objets`
+--
+
+INSERT INTO `objets` (`id`, `titre`, `description`, `photo`, `categorie`, `date`) VALUES
+(1, 'Honda civic 2018', 'Raison de la vente: moteur a sauté', '2023-09-26-14h45m36.jpg', 1, '2023-09-26'),
+(2, 'Meuble de tv', 'À donner ', '2023-09-26-14h50m09.jpg', 1, '2023-09-26'),
+(3, 'Compte interdit: Peter pan', 'Très bon, je recommande!', '2023-09-26-14h52m46.jpg', 1, '2023-09-26'),
+(4, 'Télévision 55po', 'Ne marche plus, vendu pour pièce', '2023-09-26-14h53m36.jpg', 1, '2023-09-26'),
+(5, 'GTA V', 'J\'ai volé le jeu chez EBGame. À qui la chance', '2023-09-26-14h54m24.jpg', 3, '2023-09-26');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

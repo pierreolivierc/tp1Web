@@ -102,11 +102,13 @@ def modifier_objet():
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
+        id = request.args['objet_choisi']
+        objet = recuperation_objet_avec_id(id)
+        supprimer_image(objet["photo"])
+
         nom_image = enregistrement_image()
 
-        id = request.args['objet_choisi']
-
-        maintenant = datetime.datetime.now()
+        maintenant = datetime.now()
         date = maintenant.strftime("%Y-%m-%d")
 
         #Modifcation de l'objet dans la base de donnée
@@ -147,12 +149,12 @@ def ajout_article():
 
         nom_image = enregistrement_image()
 
-        maintenant = datetime.datetime.now()
-        date = maintenant.strftime("%Y-%m-%d")
+        maintenant = datetime.now()
+        date_creation = maintenant.strftime("%Y-%m-%d")
 
 
         # insertion a la bd
-        insertion_objet(titre, description, nom_image, categorie, date)
+        insertion_objet(titre, description, nom_image, categorie, date_creation)
 
 
         return render_template(
@@ -222,7 +224,7 @@ def enregistrement_image():
         fichier = '../static/images/image_par_default.jpg'
 
     # attribution de la date comme nom pour classer les images
-    maintenant = datetime.datetime.now()
+    maintenant = datetime.now()
     nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
 
     # Mettra des / ou \ dépendamment de l'OS
@@ -235,6 +237,15 @@ def enregistrement_image():
     src = "/" + app.config['ROUTE_VERS_AJOUTS'] + "/" + nom_image
 
     return nom_image
+
+def supprimer_image(objets):
+    # Mettra des / ou \ dépendamment de l'OS
+    chemin_complet = os.path.join(
+        app.config['CHEMIN_VERS_AJOUTS'], objets
+    )
+
+    if os.path.exists(chemin_complet):
+        os.remove(chemin_complet)
 
 
 def recuperation_id_categorie(u_categorie):
