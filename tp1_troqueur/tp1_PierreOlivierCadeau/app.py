@@ -78,7 +78,7 @@ def details_objet():
         return render_template(
             'details_objet.jinja',
             objets_recuperer=objet,
-            titre_onglet='Accueil',
+            titre_onglet='Détails',
             date_creation=date_convertie,
             src= '../static/images/objets/',
             modifier='/modifier',
@@ -180,7 +180,7 @@ def liste_article():
 
     return render_template(
         'afficher_tous_les_articles.jinja',
-        titre_onglet='Accueil',
+        titre_onglet="Tous les produits",
         titre_h2='Les 5 derniers produits à échéanger',
         objets_recuperer = objets,
         src= '../static/images/objets/',
