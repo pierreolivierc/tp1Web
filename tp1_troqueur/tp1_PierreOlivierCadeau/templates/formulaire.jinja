@@ -2,17 +2,17 @@
 {% extends "base.jinja" %}
 
 {% block contenu %}
-        <form action="#" class="container" method="post" enctype="multipart/form-data" novalidate>
+        <form action="#" class="container-fluid" method="post" enctype="multipart/form-data" novalidate>
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 mb-4">
                     <label for="titre" class="form-label">Titre:</label>
                     <input type="text" class="form-control" name="titre" id="titre"/>
                 </div>
-                <div>
+                <div class="col-12 mb-4">
                     <label for="description" class="form-label" >Description:</label>
                     <textarea id="description" class="form-control" name="description" cols="30" rows="10"></textarea>
                 </div>
-                <div>
+                <div class="col-12 mb-4">
                     <label for="categorie" class="form-label">État de l'article a vendre:</label>
                     <select name="categorie" class="form-select" id="categorie">
                         <option value="Occasion">Occasion</option>
@@ -20,7 +20,7 @@
                         <option value="Neuf">Neuf</option>
                     </select>
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group col-12 mb-4">
                     <label for="image" class="input-group-text">Image:</label>
                     <input type="file" class="form-control" name="image" id="image"/>
                 </div>
