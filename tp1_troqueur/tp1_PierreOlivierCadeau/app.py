@@ -247,27 +247,31 @@ def liste_article():
 
 def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_date):
     """insertion d'un objet"""
-
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            curseur.execute(
-                "INSERT INTO `objets` " +
-                "(`id`, `titre`, `description`, `photo`, `categorie`, `date`) " +
-                "VALUES (NULL, %s, %s, %s, %s , %s)",
-                (u_titre, u_description, u_photo, u_categorie, u_date)
-            )
+    try:
+        with bd.creer_connexion() as connexion:
+            with connexion.get_curseur() as curseur:
+                curseur.execute(
+                    "INSERT INTO `objets` " +
+                    "(`id`, `titre`, `description`, `photo`, `categorie`, `date`) " +
+                    "VALUES (NULL, %s, %s, %s, %s , %s)",
+                    (u_titre, u_description, u_photo, u_categorie, u_date)
+                )
+    except Exception as e:
+        abort(500, "Une erreur interne du serveur s'est produite")
 
 
 def modfication_objet(u_titre, u_description, u_photo, u_categorie, u_date, u_id):
     """Modification d'un objet"""
-
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            curseur.execute(
-                "UPDATE `objets` SET `titre` = %s, `description` = %s, `photo` = %s, `categorie` = %s, `date` = %s " +
-                "WHERE `id` = %s",
-                (u_titre, u_description, u_photo, u_categorie, u_date, u_id)
-            )
+    try:
+        with bd.creer_connexion() as connexion:
+            with connexion.get_curseur() as curseur:
+                curseur.execute(
+                    "UPDATE `objets` SET `titre` = %s, `description` = %s, `photo` = %s, `categorie` = %s, `date` = %s " +
+                    "WHERE `id` = %s",
+                    (u_titre, u_description, u_photo, u_categorie, u_date, u_id)
+                )
+    except Exception as e:
+        abort(500, "Une erreur interne du serveur s'est produite")
 
 
 def enregistrement_image():
@@ -302,44 +306,50 @@ def supprimer_image(objets):
 
 def recuperation_id_categorie(u_categorie):
     """Pour recuperer un id de catégorie"""
+    try:
+        with bd.creer_connexion() as connexion:
+            with connexion.get_curseur() as curseur:
+                # Insertion de objet
+                curseur.execute(
+                    'SELECT id FROM `categories` '+
+                    'WHERE description = %s', (u_categorie,)
+                )
 
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            # Insertion de objet
-            curseur.execute(
-                'SELECT id FROM `categories` '+
-                'WHERE description = %s', (u_categorie,)
-            )
-
-            categorie = curseur.fetchone()
-            return categorie["id"]
+                categorie = curseur.fetchone()
+                return categorie["id"]
+    except Exception as e:
+        abort(500, "Une erreur interne du serveur s'est produite")
 
 
 def recuperation_objet():
     """Pour recuperer tous les objets"""
-
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            # Sélection de tous les objets
-            curseur.execute(
-                'SELECT objets.*, categories.description AS categorie_description ' +
-                'FROM `objets` '+
-                'JOIN `categories` ON objets.categorie = categories.id '+
-                'ORDER BY objets.photo DESC '
-            )
-            return curseur.fetchall()
+    try:
+        with bd.creer_connexion() as connexion:
+            with connexion.get_curseur() as curseur:
+                # Sélection de tous les objets
+                curseur.execute(
+                    'SELECT objets.*, categories.description AS categorie_description ' +
+                    'FROM `objets` '+
+                    'JOIN `categories` ON objets.categorie = categories.id '+
+                    'ORDER BY objets.photo DESC '
+                )
+                return curseur.fetchall()
+    except Exception as e:
+        abort(500, "Une erreur interne du serveur s'est produite")
 
 
 def recuperation_objet_avec_id(u_id):
     """Pour recuperer tous les objets"""
-
-    with bd.creer_connexion() as connexion:
-        with connexion.get_curseur() as curseur:
-            # Sélection de tous les objets
-            curseur.execute(
-                'SELECT objets.*, categories.description AS categorie_description '+
-                'FROM `objets` '+
-                'JOIN `categories` ON objets.categorie = categories.id '+
-                'WHERE objets.id =  %s', (u_id, )
-            )
-            return curseur.fetchone()
+    try:
+        with bd.creer_connexion() as connexion:
+            with connexion.get_curseur() as curseur:
+                # Sélection de tous les objets
+                curseur.execute(
+                    'SELECT objets.*, categories.description AS categorie_description '+
+                    'FROM `objets` '+
+                    'JOIN `categories` ON objets.categorie = categories.id '+
+                    'WHERE objets.id =  %s', (u_id, )
+                )
+                return curseur.fetchone()
+    except Exception as e:
+        abort(500, "Une erreur interne du serveur s'est produite")
