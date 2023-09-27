@@ -55,7 +55,7 @@ def page_non_trouvee(e):
         titre_onglet="Paramètre manquant",
         titre_h2="Erreur",
         alerte="alert-danger",
-        message="Paramètre manquant dans l'url." + e.description,
+        message="Paramètre manquant dans l'url. " + e.description,
         routes=lister_routes()
     ), 400
 
@@ -69,7 +69,7 @@ def page_non_trouvee(e):
         titre_onglet="Page inexistante",
         titre_h2="Erreur",
         alerte="alert-danger",
-        message="La page que vous recherchez n'existe pas." + e.description,
+        message="La page que vous recherchez n'existe pas. " + e.description,
         routes=lister_routes()
     ), 404
 
@@ -82,7 +82,7 @@ def erreur_serveur(e):
         titre_onglet="Erreur serveur",
         titre_h2="Erreur",
         alerte="alert-danger",
-        message="La connexion au serveur a échoué." + e.description,
+        message="La connexion au serveur a échoué. " + e.description,
         routes=lister_routes()
     ), 500
 
@@ -286,31 +286,27 @@ def liste_article():
 
 def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_date):
     """insertion d'un objet"""
-    try:
-        with bd.creer_connexion() as connexion:
-            with connexion.get_curseur() as curseur:
-                curseur.execute(
-                    "INSERT INTO `objets` " +
-                    "(`id`, `titre`, `description`, `photo`, `categorie`, `date`) " +
-                    "VALUES (NULL, %s, %s, %s, %s , %s)",
-                    (u_titre, u_description, u_photo, u_categorie, u_date)
-                )
-    except Exception as e:
-        abort(500, "La connexion à la base de donnée à échouer.")
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute(
+                "INSERT INTO `objets` " +
+                "(`id`, `titre`, `description`, `photo`, `categorie`, `date`) " +
+                "VALUES (NULL, %s, %s, %s, %s , %s)",
+                (u_titre, u_description, u_photo, u_categorie, u_date)
+            )
 
 
 def modfication_objet(u_titre, u_description, u_photo, u_categorie, u_date, u_id):
     """Modification d'un objet"""
-    try:
-        with bd.creer_connexion() as connexion:
-            with connexion.get_curseur() as curseur:
-                curseur.execute(
-                    "UPDATE `objets` SET `titre` = %s, `description` = %s, `photo` = %s, `categorie` = %s, `date` = %s " +
-                    "WHERE `id` = %s",
-                    (u_titre, u_description, u_photo, u_categorie, u_date, u_id)
-                )
-    except Exception as e:
-        abort(500, "La connexion à la base de donnée à échouer.")
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            curseur.execute(
+                "UPDATE `objets` SET `titre` = %s, `description` = %s, `photo` = %s, `categorie` = %s, `date` = %s " +
+                "WHERE `id` = %s",
+                (u_titre, u_description, u_photo, u_categorie, u_date, u_id)
+            )
 
 
 def enregistrement_image():
@@ -346,50 +342,47 @@ def supprimer_image(objets):
 
 def recuperation_id_categorie(u_categorie):
     """Pour recuperer un id de catégorie"""
-    try:
-        with bd.creer_connexion() as connexion:
-            with connexion.get_curseur() as curseur:
-                # Insertion de objet
-                curseur.execute(
-                    'SELECT id FROM `categories` ' +
-                    'WHERE description = %s', (u_categorie,)
-                )
 
-                categorie = curseur.fetchone()
-                return categorie["id"]
-    except Exception as e:
-        abort(500, "La connexion à la base de donnée à échouer.")
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            # Insertion de objet
+            curseur.execute(
+                'SELECT id FROM `categories` ' +
+                'WHERE description = %s', (u_categorie,)
+            )
+
+            categorie = curseur.fetchone()
+            return categorie["id"]
+
 
 
 def recuperation_objet():
     """Pour recuperer tous les objets"""
-    try:
-        with bd.creer_connexion() as connexion:
-            with connexion.get_curseur() as curseur:
-                # Sélection de tous les objets
-                curseur.execute(
-                    'SELECT objets.*, categories.description AS categorie_description ' +
-                    'FROM `objets` ' +
-                    'JOIN `categories` ON objets.categorie = categories.id ' +
-                    'ORDER BY objets.photo DESC '
-                )
-                return curseur.fetchall()
-    except Exception as e:
-        abort(500, "La connexion à la base de donnée à échouer.")
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            # Sélection de tous les objets
+            curseur.execute(
+                'SELECT objets.*, categories.description AS categorie_description ' +
+                'FROM `objets` ' +
+                'JOIN `categories` ON objets.categorie = categories.id ' +
+                'ORDER BY objets.photo DESC '
+            )
+            return curseur.fetchall()
+
 
 
 def recuperation_objet_avec_id(u_id):
     """Pour recuperer tous les objets"""
-    try:
-        with bd.creer_connexion() as connexion:
-            with connexion.get_curseur() as curseur:
-                # Sélection de tous les objets
-                curseur.execute(
-                    'SELECT objets.*, categories.description AS categorie_description ' +
-                    'FROM `objets` ' +
-                    'JOIN `categories` ON objets.categorie = categories.id ' +
-                    'WHERE objets.id =  %s', (u_id,)
-                )
-                return curseur.fetchone()
-    except Exception as e:
-        abort(500, "La connexion à la base de donnée à échouer.")
+
+    with bd.creer_connexion() as connexion:
+        with connexion.get_curseur() as curseur:
+            # Sélection de tous les objets
+            curseur.execute(
+                'SELECT objets.*, categories.description AS categorie_description ' +
+                'FROM `objets` ' +
+                'JOIN `categories` ON objets.categorie = categories.id ' +
+                'WHERE objets.id =  %s', (u_id,)
+            )
+            return curseur.fetchone()
+
