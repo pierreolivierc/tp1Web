@@ -170,14 +170,7 @@ def modifier_objet():
 
         nom_image = enregistrement_image()
         if not nom_image:
-            return render_template(
-                'insertion_reussi_ou_echec.jinja',
-                titre_onglet="Ajout d'un produit",
-                titre_h2="Ajout d'un produit",
-                alerte="alert-danger",
-                message="Erreur: l'image est manquante",
-                routes=lister_routes()
-            ), 400
+            nom_image = 'image_par_default.jpg'
 
         supprimer_image(objet["photo"])
 
@@ -234,14 +227,7 @@ def ajout_article():
 
         nom_image = enregistrement_image()
         if not nom_image:
-            return render_template(
-                'insertion_reussi_ou_echec.jinja',
-                titre_onglet="Ajout d'un produit",
-                titre_h2="Ajout d'un produit",
-                alerte="alert-danger",
-                message="Erreur: l'image est manquante",
-                routes=lister_routes()
-            ), 400
+            nom_image = 'image_par_default.jpg'
 
         maintenant = datetime.now()
         date_creation = maintenant.strftime("%Y-%m-%d")
@@ -314,6 +300,8 @@ def enregistrement_image():
     fichier = request.files['image']
     if not fichier:
         return None
+
+
     # attribution de la date comme nom pour classer les images
     maintenant = datetime.now()
     nom_image = maintenant.strftime("%Y-%m-%d-%Hh%Mm%S") + ".jpg"
@@ -366,7 +354,7 @@ def recuperation_objet():
                 'SELECT objets.*, categories.description AS categorie_description ' +
                 'FROM `objets` ' +
                 'JOIN `categories` ON objets.categorie = categories.id ' +
-                'ORDER BY objets.photo DESC '
+                'ORDER BY objets.date DESC '
             )
             return curseur.fetchall()
 
