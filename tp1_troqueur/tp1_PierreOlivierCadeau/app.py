@@ -4,6 +4,7 @@ TP1 web 3
 
 import bd
 import os
+import re
 from datetime import date, datetime
 from flask import Flask, redirect, render_template, make_response, request, abort
 from babel import numbers, dates
@@ -99,8 +100,12 @@ def modifier_objet():
     """Page des détails d'un objet"""
     if request.method == "POST":
 
-        titre = request.form['titre']
-        description = request.form['description']
+        titre = request.form['titre'].strip()
+        description = request.form['description'].strip()
+
+        # Supprimez toutes les balises HTML
+        titre = re.sub(r'<.*?>', '', titre)
+        description = re.sub(r'<.*?>', '', description)
 
         # récupération du ID catégorie
         categorie_value = request.form['categorie']
@@ -165,8 +170,12 @@ def ajout_article():
     """Page d'index"""
 
     if request.method == "POST":
-        titre = request.form['titre']
-        description = request.form['description']
+        titre = request.form['titre'].strip()
+        description = request.form['description'].strip()
+
+        #Supprimez toutes les balises HTML
+        titre = re.sub(r'<.*?>', '', titre)
+        description = re.sub(r'<.*?>', '', description)
 
         #récupération du ID catégorie
         categorie_value = request.form['categorie']
