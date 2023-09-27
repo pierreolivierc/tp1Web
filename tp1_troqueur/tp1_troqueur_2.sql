@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 27, 2023 at 02:32 PM
+-- Generation Time: Sep 27, 2023 at 04:57 PM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.26
 
@@ -73,7 +73,7 @@ INSERT INTO `objets` (`id`, `titre`, `description`, `photo`, `categorie`, `date`
 (5, 'GTA V', 'J\'ai volé le jeu chez EBGame. À qui la chance', '2023-09-26-14h54m24.jpg', 3, '2023-09-26'),
 (6, 'PS5', 'c\'est moi qui a volé le jeu GTA V. GUESS WHAT. J\'ai volé la ps5 avec, mais elle ne va pas bien', '2023-09-26-21h01m35.jpg', 1, '2023-09-26'),
 (7, 'Toyota corolla 2022', 'À vendre, mais sans les roues.', '2023-09-27-09h20m52.jpg', 1, '2023-09-27'),
-(8, 'Télévision 20 pouces', 'Raison de la vente, j\'ai acheté un mp3', '2023-09-27-09h47m25.jpg', 1, '2023-09-27'),
+(8, 'Télévision 20 pouces', 'Raison de la vente, j\'ai acheté un mp3', 'image_par_default.jpg', 1, '2023-09-27'),
 (9, 'Xbox', 'J\'ai acheté 8 xbox et je veux les vendre 3 fois le prix.', '2023-09-27-09h30m17.jpg', 1, '2023-09-27');
 COMMIT;
 
