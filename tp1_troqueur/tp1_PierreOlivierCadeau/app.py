@@ -117,6 +117,7 @@ def modifier_objet():
                 'insertion_reussi_ou_echec.jinja',
                 titre_onglet="Ajout d'un produit",
                 titre_h2="Ajout d'un produit",
+                alerte="alert-danger",
                 message="Erreur: le formulaire est incomplet",
                 routes=lister_routes()
             ), 400
@@ -127,6 +128,7 @@ def modifier_objet():
                 'insertion_reussi_ou_echec.jinja',
                 titre_onglet="Ajout d'un produit",
                 titre_h2="Ajout d'un produit",
+                alerte="alert-danger",
                 message="Erreur: l'image est manquante",
                 routes=lister_routes()
             ), 400
@@ -141,6 +143,7 @@ def modifier_objet():
                'insertion_reussi_ou_echec.jinja',
             titre_onglet="Ajout d'une produit",
             titre_h2="Ajout d'une produit",
+            alerte="alert-success",
             message= "Le produit a bien été ajouté!",
             routes=lister_routes()
         )
@@ -174,6 +177,7 @@ def ajout_article():
                 'insertion_reussi_ou_echec.jinja',
                 titre_onglet="Ajout d'un produit",
                 titre_h2="Ajout d'un produit",
+                alerte="alert-danger",
                 message="Erreur: le formulaire est incomplet",
                 routes=lister_routes()
             ), 400
@@ -185,6 +189,7 @@ def ajout_article():
                 'insertion_reussi_ou_echec.jinja',
                 titre_onglet="Ajout d'un produit",
                 titre_h2="Ajout d'un produit",
+                alerte= "alert-danger",
                 message="Erreur: l'image est manquante",
                 routes=lister_routes()
             ), 400
@@ -201,6 +206,7 @@ def ajout_article():
             'insertion_reussi_ou_echec.jinja',
             titre_onglet="Ajout d'une produit",
             titre_h2="Ajout d'une produit",
+            alerte="alert-success",
             message= "Le produit a bien été ajouté!",
             routes=lister_routes()
         )
@@ -214,7 +220,7 @@ def ajout_article():
 
 @app.route('/liste_tous_les_objets')
 def liste_article():
-    """faire une boucle pour afficher tous les objets"""
+    """Faire une boucle pour afficher tous les objets"""
 
     objets = recuperation_objet()
 
