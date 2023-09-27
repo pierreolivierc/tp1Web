@@ -5,7 +5,7 @@ TP1 web 3
 import bd
 import os
 from datetime import date, datetime
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, make_response, request
 from babel import numbers, dates
 from flask_babel import Babel
 
@@ -59,22 +59,26 @@ def index():
         routes=lister_routes()
     )
 
+def lire_cookie():
+    format = request.cookies.get("langue", default="fr_CA")
+    return format
+
+
+@app.route("/ecriture_cookie/<string:langue>")
+def ecriture(langue):
+    reponse = make_response(redirect('/', code=303))
+    reponse.set_cookie('langue', langue)
+    return reponse
+
+
+
 
 @app.route('/details', methods=["GET", "POST"])
 def details_objet():
     if request.method == "POST":
         id = request.form['objet_choisi']
         objet = recuperation_objet_avec_id(id)
-
-        # TODO CHANGEMENT DE LANGUE POUR LA DATE
-        #langue_selectionnee = request.form['langue']
-
-        #if langue_selectionnee == 'francais':
-            #date_convertie = dates.format_date(objet["date"], locale="fr_CA")
-        #else:
-        date_convertie = dates.format_date(objet["date"], locale="en_US")
-
-
+        date_convertie = dates.format_date(objet['date'], locale=lire_cookie())
         return render_template(
             'details_objet.jinja',
             objets_recuperer=objet,
