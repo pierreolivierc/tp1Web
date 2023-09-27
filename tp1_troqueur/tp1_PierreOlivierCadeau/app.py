@@ -5,7 +5,7 @@ TP1 web 3
 import bd
 import os
 from datetime import date, datetime
-from flask import Flask, redirect, render_template, make_response, request
+from flask import Flask, redirect, render_template, make_response, request, abort
 from babel import numbers, dates
 from flask_babel import Babel
 
@@ -91,7 +91,7 @@ def details_objet():
     else:
         # Gérez le cas où le formulaire n'a pas été soumis
         # Par exemple, redirigez l'utilisateur vers une autre page
-        return redirect('/')
+        return redirect('/', code=303)
 
 
 @app.route('/modifier', methods=["GET", "POST"])
@@ -113,14 +113,13 @@ def modifier_objet():
         objet = recuperation_objet_avec_id(id)
 
         if not titre or not description:
-
             return render_template(
                 'insertion_reussi_ou_echec.jinja',
                 titre_onglet="Ajout d'un produit",
                 titre_h2="Ajout d'un produit",
                 message="Erreur: le formulaire est incomplet",
                 routes=lister_routes()
-            )
+            ), 400
 
         nom_image = enregistrement_image()
         if not nom_image :
@@ -130,7 +129,7 @@ def modifier_objet():
                 titre_h2="Ajout d'un produit",
                 message="Erreur: l'image est manquante",
                 routes=lister_routes()
-            )
+            ), 400
 
         supprimer_image(objet["photo"])
 
@@ -171,14 +170,14 @@ def ajout_article():
         categorie = recuperation_id_categorie(categorie_value)
 
         if not titre or not description:
-
             return render_template(
                 'insertion_reussi_ou_echec.jinja',
                 titre_onglet="Ajout d'un produit",
                 titre_h2="Ajout d'un produit",
                 message="Erreur: le formulaire est incomplet",
                 routes=lister_routes()
-            )
+            ), 400
+
 
         nom_image = enregistrement_image()
         if not nom_image :
@@ -188,7 +187,7 @@ def ajout_article():
                 titre_h2="Ajout d'un produit",
                 message="Erreur: l'image est manquante",
                 routes=lister_routes()
-            )
+            ), 400
 
         maintenant = datetime.now()
         date_creation = maintenant.strftime("%Y-%m-%d")
