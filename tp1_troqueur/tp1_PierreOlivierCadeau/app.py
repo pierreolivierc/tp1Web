@@ -107,7 +107,7 @@ def modifier_objet():
         titre = re.sub(r'<.*?>', '', titre)
         description = re.sub(r'<.*?>', '', description)
 
-        # récupération du ID catégorie
+        # récupération de l'ID catégorie
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
@@ -177,7 +177,7 @@ def ajout_article():
         titre = re.sub(r'<.*?>', '', titre)
         description = re.sub(r'<.*?>', '', description)
 
-        #récupération du ID catégorie
+        #récupération de l'ID catégorie
         categorie_value = request.form['categorie']
         categorie = recuperation_id_categorie(categorie_value)
 
