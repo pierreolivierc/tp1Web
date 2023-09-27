@@ -257,7 +257,7 @@ def insertion_objet(u_titre, u_description, u_photo, u_categorie, u_date):
                     (u_titre, u_description, u_photo, u_categorie, u_date)
                 )
     except Exception as e:
-        abort(500, "Une erreur interne du serveur s'est produite")
+        abort(500, "La connexion à la base de donnée à échouer.")
 
 
 def modfication_objet(u_titre, u_description, u_photo, u_categorie, u_date, u_id):
@@ -271,7 +271,7 @@ def modfication_objet(u_titre, u_description, u_photo, u_categorie, u_date, u_id
                     (u_titre, u_description, u_photo, u_categorie, u_date, u_id)
                 )
     except Exception as e:
-        abort(500, "Une erreur interne du serveur s'est produite")
+        abort(500, "La connexion à la base de donnée à échouer.")
 
 
 def enregistrement_image():
@@ -318,7 +318,7 @@ def recuperation_id_categorie(u_categorie):
                 categorie = curseur.fetchone()
                 return categorie["id"]
     except Exception as e:
-        abort(500, "Une erreur interne du serveur s'est produite")
+        abort(500, "La connexion à la base de donnée à échouer.")
 
 
 def recuperation_objet():
@@ -335,7 +335,7 @@ def recuperation_objet():
                 )
                 return curseur.fetchall()
     except Exception as e:
-        abort(500, "Une erreur interne du serveur s'est produite")
+        abort(500, "La connexion à la base de donnée à échouer.")
 
 
 def recuperation_objet_avec_id(u_id):
@@ -352,4 +352,4 @@ def recuperation_objet_avec_id(u_id):
                 )
                 return curseur.fetchone()
     except Exception as e:
-        abort(500, "Une erreur interne du serveur s'est produite")
+        abort(500, "La connexion à la base de donnée à échouer.")
